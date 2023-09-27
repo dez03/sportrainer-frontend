@@ -89,7 +89,7 @@ const SignupScreen = () => {
       {/* </Link> */}
 
       {/* //TODO add loading button and disable the button when the API is getting called, aka style this whole page */}
-      <Text>{errorMessage}</Text>
+      <Text style={styles.signupText}>{errorMessage}</Text>
     </View>
   );
 };
