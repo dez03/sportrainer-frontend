@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "react-native";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -33,6 +41,7 @@ const SignupScreen = () => {
 
     if (data.success) {
       // TODO go to a different page once the user successfully registers
+      navigation.navigate("NewUserQuiz");
     }
     setErrorMessage(data.message);
     return;
@@ -40,84 +49,102 @@ const SignupScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../assets/sporTrainerRBYBackground.png")} // Replace with your PNG file path
-        style={styles.image} // Apply styles as needed
-      />
-      <View style={styles.topTextContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <View style={styles.loginTextContainer}>
-            <Text style={styles.loginText}> Login</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled" // or "never" depending on your preference
+      >
+        {/* Your existing content goes here */}
+
+        <Image
+          source={require("../assets/sporTrainerRBYBackground.png")} // Replace with your PNG file path
+          style={styles.image} // Apply styles as needed
+        />
+        <View style={styles.topTextContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <View style={styles.loginTextContainer}>
+              <Text style={styles.loginText}> Login</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.signupTextContainer}>
+            <Text style={styles.signupText}>Sign Up</Text>
           </View>
-        </TouchableOpacity>
-        <View style={styles.signupTextContainer}>
-          <Text style={styles.signupText}>Sign Up</Text>
         </View>
-      </View>
-      <View style={styles.overlayContainer}>
-        <Text style={styles.baseText}>
-          HELLO<Text style={styles.innerText}> PUNK. </Text>
-        </Text>
-
-        <Text style={styles.overlayText}>
-          CREATE AN ACCOUNT OR LOG INTO ONE{"\n"}
-          <Text style={styles.innerTextBelow}>
-            {""}
-            UNLESS YOU DON'T HAVE THE BALLS.{""}
+        <View style={styles.overlayContainer}>
+          <Text style={styles.baseText}>
+            HELLO<Text style={styles.innerText}> PUNK. </Text>
           </Text>
-        </Text>
-      </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholderTextColor={"white"}
-          autoCapitalize="none" // Disable capitalization
-          keyboardType="email-address" // Set keyboardType to 'email-address'
-        />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          placeholderTextColor={"white"}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
+          {/* //! TEMPORARY BUTTON, REMOVE WHEN DONE */}
+          {/*     <TouchableOpacity onPress={() => navigation.navigate("NewUserQuiz")}>
+          <Text style={styles.loginText}> Home</Text>
+        </TouchableOpacity> */}
+          {/* //! TEMPORARY BUTTON, REMOVE WHEN DONE */}
 
-        <TextInput
-          style={styles.input}
-          placeholderTextColor={"white"}
-          placeholder="First Name"
-          onChangeText={(text) => setFirstName(text)}
-          value={firstName}
-        />
-        {/* // TODO Make age a dropdown */}
+          <Text style={styles.overlayText}>
+            CREATE AN ACCOUNT OR LOG INTO ONE{"\n"}
+            <Text style={styles.innerTextBelow}>
+              {""}
+              UNLESS YOU DON'T HAVE THE BALLS.{""}
+            </Text>
+          </Text>
+        </View>
+        <View style={styles.inputContainer}>
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior="position" // or "position" depending on your preference
+          >
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              placeholderTextColor={"white"}
+              autoCapitalize="none" // Disable capitalization
+              keyboardType="email-address" // Set keyboardType to 'email-address'
+              returnKeyType="done" // Add this line
+            />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Age"
-          placeholderTextColor={"white"}
-          keyboardType="numeric"
-          onChangeText={(text) => setAge(text)}
-          value={age}
-        />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry={true}
+              placeholderTextColor={"white"}
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+            />
 
-        <TouchableOpacity
-          onPress={handleLogin}
-          style={styles.signupButtonContainer}
-        >
-          <View style={styles.signupButton}>
-            <Text style={styles.signupButtonText}>Sign Up</Text>
-            <AntDesign name="caretright" size={18} color="black" />
-          </View>
-        </TouchableOpacity>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor={"white"}
+              placeholder="First Name"
+              onChangeText={(text) => setFirstName(text)}
+              value={firstName}
+            />
+            {/* // TODO Make age a dropdown */}
 
-        {/* //TODO add a loading button and disable the button when the API is getting called, aka style this whole page */}
-        <Text style={styles.APIMessage}>{errorMessage}</Text>
-      </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Age"
+              placeholderTextColor={"white"}
+              keyboardType="numeric"
+              onChangeText={(text) => setAge(text)}
+              value={age}
+            />
+          </KeyboardAvoidingView>
+          <TouchableOpacity
+            onPress={handleLogin}
+            style={styles.signupButtonContainer}
+          >
+            <View style={styles.signupButton}>
+              <Text style={styles.signupButtonText}>Sign Up</Text>
+              <AntDesign name="caretright" size={18} color="black" />
+            </View>
+          </TouchableOpacity>
+
+          {/* //TODO add a loading button and disable the button when the API is getting called, aka style this whole page */}
+          <Text style={styles.APIMessage}>{errorMessage}</Text>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -128,7 +155,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#1c1c1e",
     color: "white",
   },
-
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "start",
+  },
   image: {
     width: "100%", // Adjust the width as needed
     height: "60%", // Set the height to 60% of the screen or adjust as needed
