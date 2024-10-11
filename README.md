@@ -28,7 +28,6 @@ To get started with the sporTrainer Frontend, follow these steps:
 
 - User authentication and registration.
 - Profile management.
-- ... (List other features of your app)
 
 ## Usage
 
